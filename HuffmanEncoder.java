@@ -13,7 +13,7 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.util.ArrayList;
 
-public class Job64CS21120Assign<Adjacency> {
+public class HuffmanEncoder<Adjacency> {
 	private PriorityQueue<CharacterNode> characterListSorted;
 	private ArrayList<CharacterNode> characterListUnsorted;
 	private int totalNodesCreated;
@@ -237,7 +237,7 @@ public class Job64CS21120Assign<Adjacency> {
 	/**
 	 * Runs Huffman Encoding*/
 	public static void main(String[] args)  {
-		Job64CS21120Assign generateHuffmenEncoding = new Job64CS21120Assign();
+		HuffmanEncoder generateHuffmenEncoding = new HuffmanEncoder();
 		generateHuffmenEncoding.generateHuffmanTree();
 	}
 
