@@ -47,13 +47,6 @@ public class HuffmanEncoder<Adjacency> {
 		}
 	}
 	
-	private void testSetNodeDepth(){
-		CharBinaryTree nodeTree = new CharBinaryTree();
-		for(CharacterNode focusNode: characterListUnsorted){
-			nodeTree.determinDepth(focusNode, 0);
-		}
-	}
-	
 	/**
 	 * This class will compare a character to 'CharacterNode' objects in the
 	 * Priority Queue, Create a 'characterNode' if one does not already exist.
@@ -115,13 +108,12 @@ public class HuffmanEncoder<Adjacency> {
 	private void readDataFile(String fileName) {
 		BufferedReader infile = null;
 		try {
-				String sCurrentLine;
+				int currentChar;
 				infile = new BufferedReader(new FileReader(fileName));
-				while ((sCurrentLine = infile.readLine()) != null) {
-					char[] input = sCurrentLine.toCharArray();
-					for(int i =0;i<input.length;i++){
-						this.insertToCharacterQueue(input[i]);
-					}
+				while ((currentChar = infile.read()) != -1) {
+				char input = (char)currentChar;
+						this.insertToCharacterQueue(input);
+					
 				} 
 			} catch (FileNotFoundException e){ // If a file is not found the program will drop out.
 				System.out.println("File not found, Pleas restart program.");
@@ -155,18 +147,18 @@ public class HuffmanEncoder<Adjacency> {
 		do{
 			this.printQueueData();
 			CharacterNode lowest1 = this.extractMin();
-			characterListSorted.remove(lowest1);
 			CharacterNode lowest2 = this.extractMin();
-			characterListSorted.remove(lowest2);
-			CharacterNode parent = new CharacterNode('|',lowest1.getNoChars()+lowest2.getNoChars());
+			CharacterNode parent = new CharacterNode('|',lowest1.getNoChars()+lowest2.getNoChars(),lowest1,lowest2);
 			CharBinaryTree nodeTree = new CharBinaryTree();
-			nodeTree.addNode(lowest1, parent);
-			nodeTree.addNode(lowest2, parent);
+			//nodeTree.addNode(lowest1, parent);
+			//nodeTree.addNode(lowest2, parent);
 			characterListSorted.add(parent);
 			totalNodesCreated +=1;
-			//parent.setNodeDepth(nodeTree.determinDepth(parent, 0));
+			parent.setNodeDepth(nodeTree.determinDepth(parent, 0));
+			nodeTree.setCompressionFileSize(parent, "");
+			nodeTree.traverseTreeInPreOrder(parent);
 		} while(characterListSorted.size()!=1);
-		this.printQueueData();
+		//this.printQueueData();
 	}
 	
 	/**
@@ -182,7 +174,8 @@ public class HuffmanEncoder<Adjacency> {
 	}
 	
 	/**
-	 * This method iterates through an array of 'characterNode' objects, printing information on the 'CharacterNode' objects, Was used for testing purposes
+	 * This method iterates through an array of 'characterNode' objects, printing 
+	 * information on the 'CharacterNode' objects, Was used for testing purposes
 	 **/
 	private void printQueueData() {
 		System.out.println("Queue List: ");
@@ -197,33 +190,32 @@ public class HuffmanEncoder<Adjacency> {
 	
 	/**
 	 * This method will calculate the uncompressed and compressed size of the read
-	 * file, also calculating the compression ratio and outputting it for the user.*/
+	 * file, also calculating the compression ratio and outputting it for the user.
+	 * 
+	 * @param node passing the root of the huffman tree to the method*/
 	private void printEncodingData(CharacterNode node) {
 		CharBinaryTree nodeTree = new CharBinaryTree();
-		node.setNodeDepth(nodeTree.determinDepth(node, 0));
-		nodeTree.setCompressionFileSize(node, node);
+		
+		nodeTree.setCompressionFileSize(node, "");
 		System.out.println("");
 		System.out.println("Compression Data: - ");
 
-		int unCompressSize = node.getNoChars()*2;
-		float compressCalculation = (nodeTree.getCompressFileSize()*100f)/unCompressSize;
-		float compressCalculation2 = (unCompressSize*compressCalculation)*100f;
-		float compressSize = unCompressSize-(unCompressSize*(unCompressSize/compressCalculation2));
-		float compresstionRatio = unCompressSize/compressSize;
+		int unCompressSize = node.getNoChars()*3;
+		float compressCalculation = nodeTree.getCompressFileSize();
+		float compresstionRatio = (unCompressSize/compressCalculation);
 		
 		System.out.println("The Uncompressed File is: " + unCompressSize);
-		System.out.println("The Compressed File is: " + compressSize);
+		System.out.println("The Compressed File is: " + compressCalculation);
 		System.out.println("The Compression ratio is: " + compresstionRatio);
+		
 		System.out.println("");
 		System.out.println("Tree Data: - ");
 		System.out.println("Height of Tree is: " + node.getNodeDepth());
 		System.out.println("Number of Nodes: " + totalNodesCreated);
 		
-		char[] temp = new char[totalNodesCreated];
-		nodeTree.averageDepth(node,temp);
+		nodeTree.averageDepth(node);
 		System.out.println("The Average Depth: " + nodeTree.getAverageDepth(totalNodesCreated));
 		
-		//nodeTree.traverseTreeInOrder(node);
 		nodeTree.traverseTreeInPreOrder(node);
 	}
 	
