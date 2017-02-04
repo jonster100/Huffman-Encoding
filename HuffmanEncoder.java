@@ -256,7 +256,7 @@ public class Job64CS21120Assign<Adjacency> {
 	/**
 	 * Runs Huffman Encoding*/
 	public static void main(String[] args)  {
-		Job64CS21120Assign generateHuffmenEncoding = new Job64CS21120Assign();
+		HuffmenEncoder generateHuffmenEncoding = new HuffmenEncoder();
 		generateHuffmenEncoding.generateHuffmanTree();
 	}
 
