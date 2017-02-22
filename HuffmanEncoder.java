@@ -13,7 +13,7 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-public class Job64CS21120Assign<Adjacency> {
+public class HuffmanEncoder<Adjacency> {
 	private PriorityQueue<CharacterNode> characterListSorted;
 	private LinkedList<CharacterNode> characterListUnsorted;
 	private int totalNodesCreated;
@@ -45,7 +45,7 @@ public class Job64CS21120Assign<Adjacency> {
 	
 	/**
 	 * Class Constructor Initialising: PriorityQueue */
-	public Job64CS21120Assign(){
+	public HuffmanEncoder(){
 		characterListSorted = new PriorityQueue<CharacterNode>(125,new characterFreqComparator());
 		characterListUnsorted = new LinkedList<CharacterNode>();
 		totalNodesCreated = 0;
